@@ -1,43 +1,13 @@
+provider "google" {
+  project = "turing-zone-311006"
+  region  = "us-central1"
+}
 
-resource "google_compute_instance" "default" {
-  name         = "test-01-test32-0"
-  machine_type = "n1-standard-1"
-  zone         = "us-central1-a"
+module "gcs_buckets" {
+  source     = "terraform-google-modules/cloud-storage/google"
+  version    = "~> 1.7"
+  project_id = "turing-zone-311006"
+  names      = ["first-09-awe-1", "second-98-88-i"]
+  prefix     = "my-mrs-8-9"
 
-  tags = ["foo", "bar"]
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-9"
-      type  = "pd-ssd"
-      size  = 50
-    }
-  }
-
-/*
-  // Local SSD disk
-  scratch_disk {
-    interface = "SCSI"
-  }
-*/
-  network_interface {
-    network = "vpc-sn"
-
-    access_config {
-      // Ephemeral IP
-    }
-  }
-
-  metadata = {
-    foo = "bar"
-  }
-
-  metadata_startup_script = "echo hi > /test.txt"
-/*
-  service_account {
-    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
-    email  = test-proqa@qp-strides-pharma-2021-04.iam.gserviceaccount.com
-    scopes = ["cloud-platform"]
-  }
-*/
 }
